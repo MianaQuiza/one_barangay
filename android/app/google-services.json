@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "283455709596",
+    "project_id": "onebarangay-de3cd",
+    "storage_bucket": "onebarangay-de3cd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:283455709596:android:fb9e8080b1ebeb9c59e859",
+        "android_client_info": {
+          "package_name": "com.example.one_barangay"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBa5qIaU8z8uIKwkSNqun9DRbAqLo9ahbc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
