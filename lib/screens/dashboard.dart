@@ -19,7 +19,7 @@ import '../health/health_center_screen.dart';
 import '../emergency/emergency_screen.dart';
 import '../map/community_map_screen.dart';
 import '../notifications/notifications_screen.dart';
-import 'product_list_screen.dart'; // Adjust path if placed in screens folder
+
 
 class HomeDashboard extends StatefulWidget {
   const HomeDashboard({super.key});
@@ -347,9 +347,7 @@ class _AppDrawer extends StatelessWidget {
                   item(Icons.search_outlined, 'Lost and Found', const LostFoundScreen()),
                   item(Icons.emergency_outlined, 'Emergency Resources', const EmergencyScreen()),
                   
-                  // 👇 ADDED THIS LINE
-                  item(Icons.storefront_outlined, 'Product Catalog', const ProductListScreen()), 
-                  
+                 
                   const Divider(height: 32),
                   ListTile(
                     leading: const Icon(Icons.logout, color: AppColors.danger),

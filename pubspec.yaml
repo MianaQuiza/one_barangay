@@ -40,9 +40,7 @@ dependencies:
   connectivity_plus: ^6.0.5
   shared_preferences: ^2.3.2
 
-  # Activity Requirement (API Integration)
-  http: ^1.2.2
-
+ 
 dev_dependencies:
   flutter_test:
     sdk: flutter
