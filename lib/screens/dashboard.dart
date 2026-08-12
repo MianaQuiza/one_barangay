@@ -9,7 +9,6 @@ import '../../widgets/common_widgets.dart';
 import 'announcement.dart';
 import '../waste_collection/waste_collection_screen.dart';
 import '../community_assistance/incident_list_screen.dart';
-// removed unused import: report_incident_screen.dart
 import '../lost_found/lost_found_screen.dart';
 import '../volunteer/volunteer_screen.dart';
 import '../calendar/community_calendar_screen.dart';
@@ -19,7 +18,7 @@ import '../health/health_center_screen.dart';
 import '../emergency/emergency_screen.dart';
 import '../map/community_map_screen.dart';
 import '../notifications/notifications_screen.dart';
-
+import 'profile_screen.dart';
 
 class HomeDashboard extends StatefulWidget {
   const HomeDashboard({super.key});
@@ -35,15 +34,13 @@ class _HomeDashboardState extends State<HomeDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    // Theme will be used in sub-widgets; avoid unused local variable here.
-    
     // Safely initializing the screens inside the build method
-    // so that Theme.of(context) does not crash the app.
+    // so that the Bottom Navigation correctly swaps the active view.
     final List<Widget> screens = [
       _buildHomeContent(),
       const CommunityMapScreen(),
       const IncidentListScreen(),
-      const Center(child: Text('Profile Settings Coming Soon')), // Placeholder for Profile
+      const ProfileScreen(), // The newly built Profile UI
     ];
 
     return Scaffold(
@@ -56,7 +53,9 @@ class _HomeDashboardState extends State<HomeDashboard> {
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications_outlined, size: 28),
-            onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const NotificationsScreen())),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => const NotificationsScreen()),
+            ),
           ),
           const SizedBox(width: 8),
         ],
@@ -148,7 +147,7 @@ class _HomeDashboardState extends State<HomeDashboard> {
           ),
           const SizedBox(height: 24),
 
-          // 2. High-Priority Emergency Alerts
+          // 2. High-Priority Emergency Alerts (Kept as stream, will hide if empty)
           StreamBuilder<List<EmergencyAlert>>(
             stream: _firestore.emergencyAlertsStream(),
             builder: (context, snapshot) {
@@ -211,8 +210,8 @@ class _HomeDashboardState extends State<HomeDashboard> {
           ),
           const SizedBox(height: 32),
 
-          // 4. Latest Announcements List
-          Row(
+          // 4. Latest Announcements List (MOCK DATA VERSION)
+          Row( 
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Latest Updates', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: AppColors.navy)),
@@ -222,38 +221,23 @@ class _HomeDashboardState extends State<HomeDashboard> {
               ),
             ],
           ),
-          StreamBuilder<List<Announcement>>(
-            stream: _firestore.announcementsStream(),
-            builder: (context, snapshot) {
-              if (snapshot.hasError) return const Center(child: Text('Error loading updates'));
-              if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
-              
-              final items = snapshot.data!.take(3).toList();
-              if (items.isEmpty) return const Center(child: Text('No announcements yet.', style: TextStyle(color: AppColors.textSecondary)));
-              
-              return Column(
-                children: items.map((a) => Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.divider),
-                    ),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      leading: Container(
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(color: AppColors.info.withOpacity(0.1), shape: BoxShape.circle),
-                        child: const Icon(Icons.campaign_outlined, color: AppColors.info),
-                      ),
-                      title: Text(a.title, style: const TextStyle(fontWeight: FontWeight.w600, color: AppColors.navy)),
-                      subtitle: Text('${a.category} • ${timeAgo(a.createdAt)}', style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
-                    ),
-                  ),
-                )).toList(),
-              );
-            },
+          
+          // Hardcoded mock UI for Latest Updates
+          Column(
+            children: [
+              _buildMockAnnouncementCard(
+                title: 'Water Interruption Notice',
+                category: 'Alert',
+                time: '2 hours ago',
+                color: AppColors.danger,
+              ),
+              _buildMockAnnouncementCard(
+                title: 'Barangay Assembly Meeting',
+                category: 'Event',
+                time: '1 day ago',
+                color: AppColors.accent,
+              ),
+            ],
           ),
           const SizedBox(height: 30),
         ],
@@ -291,6 +275,30 @@ class _HomeDashboardState extends State<HomeDashboard> {
               style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13, color: AppColors.navy),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  // Temporary Widget for Mock Announcements
+  Widget _buildMockAnnouncementCard({required String title, required String category, required String time, required Color color}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.divider),
+        ),
+        child: ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          leading: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(color: color.withOpacity(0.1), shape: BoxShape.circle),
+            child: Icon(Icons.campaign_outlined, color: color),
+          ),
+          title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600, color: AppColors.navy)),
+          subtitle: Text('$category • $time', style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
         ),
       ),
     );
@@ -347,7 +355,6 @@ class _AppDrawer extends StatelessWidget {
                   item(Icons.search_outlined, 'Lost and Found', const LostFoundScreen()),
                   item(Icons.emergency_outlined, 'Emergency Resources', const EmergencyScreen()),
                   
-                 
                   const Divider(height: 32),
                   ListTile(
                     leading: const Icon(Icons.logout, color: AppColors.danger),

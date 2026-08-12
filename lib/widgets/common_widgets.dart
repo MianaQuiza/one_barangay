@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import '../models/model.dart';
 import '../theme/app_theme.dart';
 
+
 /// Section header used at the top of grouped content across screens.
 class SectionHeader extends StatelessWidget {
   final String title;

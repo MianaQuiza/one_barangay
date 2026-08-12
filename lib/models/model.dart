@@ -412,3 +412,4 @@ class ResidentProfile {
         'role': role ?? 'resident',
       };
 }
+

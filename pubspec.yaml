@@ -29,6 +29,8 @@ dependencies:
   # Maps & location
   google_maps_flutter: ^2.9.0
   geolocator: ^13.0.1
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.0
 
   # Media
   image_picker: ^1.1.2
@@ -40,7 +42,6 @@ dependencies:
   connectivity_plus: ^6.0.5
   shared_preferences: ^2.3.2
 
- 
 dev_dependencies:
   flutter_test:
     sdk: flutter
